@@ -37,6 +37,7 @@ while(<IN>) {
 		print "Got $d[24] - downloading into $outdir\n";
 		download_gca($outdir, $d[24]);
 	} elsif ($d[24] =~ m/^S/) {
+		print "Got $d[24] - downloading into $outdir\n";
 		download_srx($outdir, $d[24]);
 	} else {
 		print "Got $d[24] - downloading into $outdir\n";
@@ -123,6 +124,11 @@ sub download_gca {
 	my $pfx;
         my $vsn;
 	while(<GCA>) {	
+
+		if (m/<CHROMOSOME accession=\"(.+)\">/) {
+			&download_accession($dir, $1);
+			return(0);
+		}
 
 		if (m/<PREFIX>(.+)<\/PREFIX>/) {
 			$pfx = $1;
